@@ -1,4 +1,7 @@
 # Introduction
+
+[![Build status](https://ci.appveyor.com/api/projects/status/eue1afldhmn6luvu?svg=true)](https://ci.appveyor.com/project/onlyutkarsh/vsostatusinspector)
+
 Occasionally when Visual Studio Online (VSO) is down or having some issues, we head over to the [status overview](https://www.visualstudio.com/en-us/support/support-overview-vs.aspx) page to monitor its status. How nice would it be to monitor the status while you code in Visual Studio? I thought it would be useful, and I just developed a tiny extension to monitor the status of VSO from Visual Studio itself.
 
 The extension quitely sits in the Visual Studio status bar displaying an icon - based on whether Visual Studio Online is running smooth or has some issues or completely down. 
