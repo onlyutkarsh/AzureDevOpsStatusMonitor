@@ -51,8 +51,8 @@ build:
 
 # scripts to run before build
 before_build:
-  nuget restore
-  rd "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Amazon Web Services LLC" /s /q
+  - nuget restore
+  - rd "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Amazon Web Services LLC" /s /q
 # scripts to run after build
 after_build:
 
