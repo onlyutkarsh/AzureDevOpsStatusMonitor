@@ -96,46 +96,61 @@ namespace VSOStatusInspector
             HtmlWeb htmlWeb = new HtmlWeb();
             HtmlDocument doc = htmlWeb.Load("https://www.visualstudio.com/en-us/support/support-overview-vs.aspx");
 
-            var div = doc.DocumentNode.SelectSingleNode("//div[@class='TfsServiceStatus']");
-            var img = div.SelectSingleNode("//img[@id]");
-            var h1 = div.SelectSingleNode("//div[@class='RichText']/h1");
-            var p = div.SelectSingleNode("//div[@class='RichText']/p");
-            //var img = doc.DocumentNode.SelectSingleNode("//div[@class='TfsServiceStatus']//img[@id]");
-            if (img != null)
+            try
             {
-                var imageId = img.Id.ToUpper();
-                if (imageId == "GREEN")
-                {
-                    SetIcon(Resources.green);
-                }
-                else if (imageId == "YELLOW")
-                {
-                    SetIcon(Resources.yellow);
-                }
-                else if (imageId == "RED")
-                {
-                    SetIcon(Resources.red);
-                }
-                else
+                var div = doc.DocumentNode.SelectSingleNode("//div[@class='TfsServiceStatus']");
+                if (div == null)
                 {
                     SetIcon(Resources.unknown);
+                    WriteToOutputWindow("Could not parse the status. Please visit https://www.visualstudio.com/en-us/support/support-overview-vs.aspx");
+                    return;
                 }
-                if (h1 != null && p != null)
+                var img = div.SelectSingleNode("//img[@id]");
+                var h1 = div.SelectSingleNode("//div[@class='RichText']/h1");
+                var p = div.SelectSingleNode("//div[@class='RichText']/p");
+                //var img = doc.DocumentNode.SelectSingleNode("//div[@class='TfsServiceStatus']//img[@id]");
+                if (img != null)
                 {
-                    var msg = string.IsNullOrEmpty(h1.InnerText)
-                        ? string.Format("Visual Studio Online Status - {0}", p.InnerText)
-                        : string.Format("{0} - {1}", h1.InnerText, p.InnerText);
-                    WriteToOutputWindow(msg);
+                    var imageId = img.Id.ToUpper();
+                    if (imageId == "GREEN")
+                    {
+                        SetIcon(Resources.green);
+                    }
+                    else if (imageId == "YELLOW")
+                    {
+                        SetIcon(Resources.yellow);
+                    }
+                    else if (imageId == "RED")
+                    {
+                        SetIcon(Resources.red);
+                    }
+                    else
+                    {
+                        SetIcon(Resources.unknown);
+                    }
+                    if (h1 != null && p != null)
+                    {
+                        var msg = string.IsNullOrEmpty(h1.InnerText)
+                            ? string.Format("Visual Studio Online Status - {0}", p.InnerText)
+                            : string.Format("{0} - {1}", h1.InnerText, p.InnerText);
+                        WriteToOutputWindow(msg);
+                    }
+                    else
+                    {
+                        SetIcon(Resources.unknown);
+                        WriteToOutputWindow("Could not parse the status. Please visit https://www.visualstudio.com/en-us/support/support-overview-vs.aspx");
+                    }
                 }
                 else
                 {
-                    WriteToOutputWindow("Could not parse the status. Please visit https://www.visualstudio.com/en-us/support/support-overview-vs.aspx");
+                    Debug.WriteLine("Found status as Unknown");
+                    SetIcon(Resources.unknown);
                 }
             }
-            else
+            catch (Exception exception)
             {
-                Debug.WriteLine("Found status as Unknown");
-                SetIcon(Resources.unknown);
+                WriteToOutputWindow("Sorry, an exception occurred.");
+                WriteToOutputWindow(exception.ToString());
             }
         }
 
