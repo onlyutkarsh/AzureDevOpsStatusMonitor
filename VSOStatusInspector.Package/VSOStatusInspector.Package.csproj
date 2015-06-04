@@ -131,6 +131,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventArgs\OptionsChangedEventArgs.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="VSOStatusInspectorOptions.cs">
