@@ -18,7 +18,7 @@ namespace VSOStatusInspector
     [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
     [ProvideBindingPath]
     [ProvideOptionPage(typeof(VSOStatusInspectorOptions), EXTENSION_NAME, "General", 0, 0, true)]
-    public sealed class VSOStatusInspectorPackage : Package
+    public sealed class VSOStatusInspectorPackage : Package, IDisposable
     {
         private const string EXTENSION_NAME = "VSO Status Inspector";
         private IVsStatusbar _bar;
@@ -26,6 +26,7 @@ namespace VSOStatusInspector
         private VSOStatusInspectorOptions _options;
         private Guid _paneGuid = new Guid("{170638A1-CFD7-47C8-975A-FBAA9E532AD5}");
         private IVsOutputWindow _outputWindow;
+        private Timer _timer;
 
         public VSOStatusInspectorPackage()
         {
@@ -45,15 +46,19 @@ namespace VSOStatusInspector
 
             //get interval from options
             _options = (VSOStatusInspectorOptions)GetDialogPage(typeof(VSOStatusInspectorOptions));
+            if (_options != null)
+            {
+                _options.OnOptionsChanged += OnOptionsChanged;
+            }
 
             //call the timer code first without waiting for timer trigger
             OnTimerTick(null, null);
 
             //Set the timer
-            var timer = new Timer();
-            timer.Interval = TimeSpan.FromSeconds(_options.Interval).TotalMilliseconds;
-            timer.Elapsed += OnTimerTick;
-            timer.Start();
+            _timer = new Timer();
+            _timer.Interval = TimeSpan.FromSeconds(_options.Interval).TotalMilliseconds;
+            _timer.Elapsed += OnTimerTick;
+            _timer.Start();
         }
 
         private void WriteToOutputWindow(string message)
@@ -154,6 +159,12 @@ namespace VSOStatusInspector
             }
         }
 
+        private void OnOptionsChanged(object sender, OptionsChangedEventArgs e)
+        {
+            _timer.Interval = TimeSpan.FromSeconds(e.Interval).TotalMilliseconds;
+            WriteToOutputWindow(String.Format("Interval changed to {0} seconds", e.Interval));
+        }
+
         /// <summary>
         /// Gets the status bar.
         /// </summary>
@@ -208,6 +219,13 @@ namespace VSOStatusInspector
             return bitmap;
         }
 
-        
+        public void Dispose()
+        {
+            if (_timer != null)
+            {
+                _timer.Dispose();
+            }
+        }
+
     }
 }

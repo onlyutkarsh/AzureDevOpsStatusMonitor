@@ -19,5 +19,20 @@ namespace VSOStatusInspector
             get { return _interval; }
             set { _interval = value; }
         }
+
+        protected override void OnApply(PageApplyEventArgs e)
+        {
+            base.OnApply(e);
+            if (OnOptionsChanged != null)
+            {
+                var optionsEventArg = new OptionsChangedEventArgs
+                {
+                    Interval = Interval,
+                };
+                OnOptionsChanged(this, optionsEventArg);
+            }
+        }
+
+        public event EventHandler<OptionsChangedEventArgs> OnOptionsChanged;
     }
 }
