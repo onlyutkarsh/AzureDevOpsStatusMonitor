@@ -69,7 +69,7 @@ build_script:
 artifacts:
 
   # pushing a single file
-  - path: .\bin\$(configuration)\VSOStatusInspector.vsix
+  - path: .\VSOStatusInspector.Package\bin\$(configuration)\VSOStatusInspector.vsix
     name: VSOStatusInspector.vsix
   # pushing a single file with environment variable in path and "Deployment name" specified
   # zips all the bin\release folder as output.zip
