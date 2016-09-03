@@ -111,8 +111,8 @@ namespace VSOStatusInspector
                     return;
                 }
                 var img = div.SelectSingleNode("//img[@id]");
-                var h1 = div.SelectSingleNode("//div[@class='RichText']/h1");
-                var p = div.SelectSingleNode("//div[@class='RichText']/p");
+                var h1 = div.SelectSingleNode("//div[@class='RichText']/div[@class='header']/h1");
+                var p = div.SelectSingleNode("//div[@class='RichText']/div[@class='header']/p");
                 //var img = doc.DocumentNode.SelectSingleNode("//div[@class='TfsServiceStatus']//img[@id]");
                 if (img != null)
                 {
