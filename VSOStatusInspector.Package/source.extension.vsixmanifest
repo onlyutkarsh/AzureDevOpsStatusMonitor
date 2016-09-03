@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
   <Identifier Id="beb913a8-333c-41b1-a736-878cebad3bc6">
-    <Name>VSO Status Inspector</Name>
+    <Name>VSTS Status Inspector</Name>
     <Author>Utkarsh Shigihalli and Tarun Arora</Author>
     <Version>1.0</Version>
-    <Description xml:space="preserve">Inspect status of Visual Studio Online inside Visual Studio</Description>
+    <Description xml:space="preserve">Inspect status of Visual Studio Team Services inside Visual Studio</Description>
     <Locale>1033</Locale>
     <Icon>Resources\Package.ico</Icon>
     <PreviewImage>Resources\preview.png</PreviewImage>
