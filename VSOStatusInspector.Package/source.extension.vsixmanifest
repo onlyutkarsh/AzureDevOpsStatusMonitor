@@ -3,10 +3,10 @@
     <Metadata>
         <Identity Id="beb913a8-333c-41b1-a736-878cebad3bc6" Version="1.3" Language="en-US" Publisher="Utkarsh Shigihalli and Tarun Arora" />
         <DisplayName>VSTS Status Monitor</DisplayName>
-        <Description xml:space="preserve">Inspect status of Visual Studio Team Services inside Visual Studio</Description>
+        <Description xml:space="preserve">Monitor status of Visual Studio Team Services inside Visual Studio</Description>
         <Icon>Resources\Package.ico</Icon>
         <PreviewImage>Resources\preview.png</PreviewImage>
-        <Tags>VSTS, Visual Studio Team Service, Monitor, Status</Tags>
+        <Tags>VSTS, Visual Studio Team Service, Monitor, Status, Inspector</Tags>
     </Metadata>
     <Installation>
         <InstallationTarget Version="[14.0,15.0]" Id="Microsoft.VisualStudio.Community" />
