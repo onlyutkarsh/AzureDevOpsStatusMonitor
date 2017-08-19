@@ -3,7 +3,7 @@
 
 using System;
 
-namespace VSOStatusInspector
+namespace VSTSStatusMonitor
 {
     static class GuidList
     {

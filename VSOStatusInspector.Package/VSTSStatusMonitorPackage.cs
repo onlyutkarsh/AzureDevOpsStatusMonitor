@@ -1,39 +1,18 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="VSTSStatusInspector.cs" company="Company">
-//     Copyright (c) Company.  All rights reserved.
-// </copyright>
-//------------------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Timers;
-using HtmlAgilityPack;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Newtonsoft.Json;
+using VSTSStatusMonitor.Entities;
 
-namespace VSOStatusInspector
+namespace VSTSStatusMonitor
 {
-    /// <summary>
-    /// This is the class that implements the package exposed by this assembly.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// The minimum requirement for a class to be considered a valid package for Visual Studio
-    /// is to implement the IVsPackage interface and register itself with the shell.
-    /// This package uses the helper classes defined inside the Managed Package Framework (MPF)
-    /// to do it: it derives from the Package class that provides the implementation of the
-    /// IVsPackage interface and uses the registration attributes defined in the framework to
-    /// register itself and its components with the shell. These attributes tell the pkgdef creation
-    /// utility what data to put into .pkgdef file.
-    /// </para>
-    /// <para>
-    /// To get loaded into VS, the package must be referred by &lt;Asset Type="Microsoft.VisualStudio.VsPackage" ...&gt; in .vsixmanifest file.
-    /// </para>
-    /// </remarks>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
@@ -41,33 +20,17 @@ namespace VSOStatusInspector
     [ProvideAutoLoad(UIContextGuids80.NoSolution)]
     [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
     [ProvideBindingPath]
-    [ProvideOptionPage(typeof(VSOStatusInspectorOptions), EXTENSION_NAME, "General", 0, 0, true)]
-    public sealed class VSTSStatusInspector : Package
+    [ProvideOptionPage(typeof(VSTSStatusMonitorOptions), EXTENSION_NAME, "General", 0, 0, true)]
+    public sealed class VSTSStatusMonitorPackage : Package
     {
-        private const string EXTENSION_NAME = "VSTS Status Inspector";
+        private const string EXTENSION_NAME = "VSTS Status Monitor";
         private IVsStatusbar _bar;
         private IntPtr _hdcBitmap = IntPtr.Zero;
-        private VSOStatusInspectorOptions _options;
+        private VSTSStatusMonitorOptions _options;
         private Guid _paneGuid = new Guid("{170638A1-CFD7-47C8-975A-FBAA9E532AD5}");
         private IVsOutputWindow _outputWindow;
         private Timer _timer;
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VSTSStatusInspector"/> class.
-        /// </summary>
-        public VSTSStatusInspector()
-        {
-            // Inside this method you can place any initialization code that does not require
-            // any Visual Studio service because at this point the package object is created but
-            // not sited yet inside Visual Studio environment. The place to do all the other
-            // initialization is the Initialize method.
-        }
 
-        #region Package Members
-
-        /// <summary>
-        /// Initialization of the package; this method is called right after the package is sited, so this is the place
-        /// where you can put all the initialization code that rely on services provided by VisualStudio.
-        /// </summary>
         protected override void Initialize()
         {
             base.Initialize();
@@ -75,7 +38,7 @@ namespace VSOStatusInspector
             SetIcon(Resources.unknown);
 
             //get interval from options
-            _options = (VSOStatusInspectorOptions)GetDialogPage(typeof(VSOStatusInspectorOptions));
+            _options = (VSTSStatusMonitorOptions)GetDialogPage(typeof(VSTSStatusMonitorOptions));
             if (_options != null)
             {
                 _options.OnOptionsChanged += OnOptionsChanged;
@@ -89,6 +52,7 @@ namespace VSOStatusInspector
             _timer.Interval = TimeSpan.FromSeconds(_options.Interval).TotalMilliseconds;
             _timer.Elapsed += OnTimerTick;
             _timer.Start();
+
         }
 
         private void WriteToOutputWindow(string message)
@@ -105,7 +69,7 @@ namespace VSOStatusInspector
             // Retrieve the new pane.
             OutputWindow.GetPane(ref _paneGuid, out outputPane);
 
-            outputPane.OutputStringThreadSafe(string.Format("[{0}]\t{1}", DateTime.Now.ToString("hh:mm:ss tt"), message));
+            outputPane.OutputStringThreadSafe($"[{DateTime.Now:hh:mm:ss tt}]\t{message}");
             outputPane.OutputStringThreadSafe(Environment.NewLine);
         }
 
@@ -123,63 +87,40 @@ namespace VSOStatusInspector
 
         private void OnTimerTick(object sender, ElapsedEventArgs e)
         {
-            Debug.WriteLine(string.Format("{0}: Checking VSTS status", DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")));
-
-            //set icon to unknown till processing
-            SetIcon(Resources.waiting);
-
-            HtmlWeb htmlWeb = new HtmlWeb();
-            HtmlDocument doc = htmlWeb.Load("https://www.visualstudio.com/en-us/support/support-overview-vs.aspx");
-
+            Debug.WriteLine($"{DateTime.Now:dd-MM-yyyy HH:mm:ss}: Checking VSTS status");
             try
             {
-                var div = doc.DocumentNode.SelectSingleNode("//div[@class='TfsServiceStatus']");
-                if (div == null)
+                //set icon to unknown till processing
+                SetIcon(Resources.waiting);
+
+                using (var client = new HttpClient())
                 {
-                    SetIcon(Resources.unknown);
-                    WriteToOutputWindow("Could not parse the status. Please visit https://www.visualstudio.com/en-us/support/support-overview-vs.aspx");
-                    return;
-                }
-                var img = div.SelectSingleNode("//img[@id]");
-                var h1 = div.SelectSingleNode("//div[@class='RichText']/div[@class='header']/h1");
-                var p = div.SelectSingleNode("//div[@class='RichText']/div[@class='header']/p");
-                //var img = doc.DocumentNode.SelectSingleNode("//div[@class='TfsServiceStatus']//img[@id]");
-                if (img != null)
-                {
-                    var imageId = img.Id.ToUpper();
-                    if (imageId == "GREEN")
+                    var response = client.GetAsync("https://www.visualstudio.com/wp-json/vscom/v1/service-status").GetAwaiter()
+                        .GetResult();
+
+                    if (!response.IsSuccessStatusCode)
                     {
-                        SetIcon(Resources.green);
+                        SetIcon(Resources.unknown);
+                        WriteToOutputWindow("Could not parse the status. Please visit https://www.visualstudio.com/team-services/support");
+                        return;
                     }
-                    else if (imageId == "YELLOW")
-                    {
-                        SetIcon(Resources.yellow);
-                    }
-                    else if (imageId == "RED")
+                    var content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+                    var vstsResponse = JsonConvert.DeserializeObject<VSTSStatusResponse>(content);
+
+
+                    if (string.Equals("maintenance", vstsResponse.Status, StringComparison.InvariantCultureIgnoreCase))
                     {
                         SetIcon(Resources.red);
+                        WriteToOutputWindow($"{vstsResponse.Title} - {vstsResponse.Message}. Please visit https://blogs.msdn.com/b/vsoservice/ for details and history");
+
                     }
-                    else
+                    else if (string.Equals("available", vstsResponse.Status, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        SetIcon(Resources.unknown);
+                        SetIcon(Resources.green);
+                        WriteToOutputWindow($"{vstsResponse.Title} - {vstsResponse.Message}.");
+
                     }
-                    if (h1 != null && p != null)
-                    {
-                        var msg = string.IsNullOrEmpty(h1.InnerText)
-                            ? string.Format("Visual Studio Team Services Status - {0}", p.InnerText)
-                            : string.Format("{0} - {1}", h1.InnerText, p.InnerText);
-                        WriteToOutputWindow(msg);
-                    }
-                    else
-                    {
-                        SetIcon(Resources.unknown);
-                        WriteToOutputWindow("Could not parse the status. Please visit https://www.visualstudio.com/en-us/support/support-overview-vs.aspx");
-                    }
-                }
-                else
-                {
-                    Debug.WriteLine("Found status as Unknown");
-                    SetIcon(Resources.unknown);
                 }
             }
             catch (Exception exception)
@@ -249,7 +190,5 @@ namespace VSOStatusInspector
                 _timer.Dispose();
             }
         }
-
-        #endregion
     }
 }

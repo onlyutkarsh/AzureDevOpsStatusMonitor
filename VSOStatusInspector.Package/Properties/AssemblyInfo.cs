@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("VSTS Status Inspector")]
+[assembly: AssemblyTitle("VSTS Status Monitor")]
 [assembly: AssemblyDescription("v1.0.0 Release")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Utkarsh Shigihalli & Tarun Arora")]
-[assembly: AssemblyProduct("VSTS Status Inspector")]
+[assembly: AssemblyProduct("VSTS Status Monitor")]
 [assembly: AssemblyCopyright("© $YYYY Utkarsh Shigihalli & Tarun Arora")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]   

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{B5452847-0C10-44E2-AB86-869EA30D9440}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{B5452847
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSOStatusInspector.Package", "VSOStatusInspector.Package\VSOStatusInspector.Package.csproj", "{08A0E9C8-5281-4631-8F31-893151640EF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSTSStatusMonitor.Package", "VSOStatusInspector.Package\VSTSStatusMonitor.Package.csproj", "{08A0E9C8-5281-4631-8F31-893151640EF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,5 +26,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D4BD204-9159-404C-B6F0-A820EB7A7ABD}
 	EndGlobalSection
 EndGlobal

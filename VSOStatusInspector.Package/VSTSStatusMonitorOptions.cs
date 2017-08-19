@@ -3,11 +3,11 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
 
-namespace VSOStatusInspector
+namespace VSTSStatusMonitor
 {
     [ClassInterface(ClassInterfaceType.AutoDual)]
     [CLSCompliant(false), ComVisible(true)]
-    public class VSOStatusInspectorOptions : DialogPage
+    public class VSTSStatusMonitorOptions : DialogPage
     {
         private int _interval = 60;
 
