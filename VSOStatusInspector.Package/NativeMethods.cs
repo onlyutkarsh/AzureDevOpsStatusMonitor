@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace VSOStatusInspector
+namespace VSTSStatusMonitor
 {
     internal static class NativeMethods
     {
