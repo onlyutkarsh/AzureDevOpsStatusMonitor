@@ -11,5 +11,6 @@ namespace VSTSStatusMonitor
         public const string guidVSOStatusCmdSetString = "cde75c62-f5ad-4178-ac17-9ef5116792f6";
 
         public static readonly Guid guidVSOStatusCmdSet = new Guid(guidVSOStatusCmdSetString);
+        public static Guid guidVSOStatusPkg = new Guid(guidVSOStatusPkgString);
     };
 }

@@ -7,7 +7,7 @@ namespace VSTSStatusMonitor
 {
     [ClassInterface(ClassInterfaceType.AutoDual)]
     [CLSCompliant(false), ComVisible(true)]
-    public class VSTSStatusMonitorOptions : DialogPage
+    public class Options : DialogPage
     {
         private int _interval = 60;
 

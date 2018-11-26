@@ -1,58 +1,105 @@
-﻿using System;
-using System.Diagnostics;
+﻿using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Net.Http;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices;
-using System.Timers;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using Newtonsoft.Json;
+using System.Threading;
 using VSTSStatusMonitor.Entities;
+using VSTSStatusMonitor.Helpers;
+using VSTSStatusMonitor.Service;
+using Task = System.Threading.Tasks.Task;
 
 namespace VSTSStatusMonitor
 {
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
-    [PackageRegistration(UseManagedResourcesOnly = true)]
+    [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [Guid(GuidList.guidVSOStatusPkgString)]
-    [ProvideAutoLoad(UIContextGuids80.NoSolution)]
-    [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
+    [ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideBindingPath]
-    [ProvideOptionPage(typeof(VSTSStatusMonitorOptions), EXTENSION_NAME, "General", 0, 0, true)]
-    public sealed class VSTSStatusMonitorPackage : Package
+    [ProvideOptionPage(typeof(Options), EXTENSION_NAME, "General", 0, 0, true)]
+    public sealed class VSTSStatusMonitorPackage : AsyncPackage
     {
         private const string EXTENSION_NAME = "VSTS Status Monitor";
         private IVsStatusbar _bar;
         private IntPtr _hdcBitmap = IntPtr.Zero;
-        private VSTSStatusMonitorOptions _options;
+        private static Options _options;
         private Guid _paneGuid = new Guid("{170638A1-CFD7-47C8-975A-FBAA9E532AD5}");
         private IVsOutputWindow _outputWindow;
-        private Timer _timer;
+        private System.Timers.Timer _timer;
+        private static readonly object _syncRoot = new object();
+        AzDevOpsStatusMonitor _monitor = new AzDevOpsStatusMonitor();
+        private IDisposable _subscription;
 
-        protected override void Initialize()
+
+        public static Options Options
         {
-            base.Initialize();
+            get
+            {
+                if (_options == null)
+                {
+                    lock (_syncRoot)
+                    {
+                        if (_options == null)
+                        {
+                            LoadPackage();
+                        }
+                    }
+                }
+
+                return _options;
+            }
+        }
+
+
+        protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        {
+            // Switches to the UI thread in order to consume some services used in command initialization
+            await JoinableTaskFactory.SwitchToMainThreadAsync();
+
             //Set to unknown icon first
-            SetIcon(Resources.unknown);
+            //SetIcon(Resources.unknown);
 
             //get interval from options
-            _options = (VSTSStatusMonitorOptions)GetDialogPage(typeof(VSTSStatusMonitorOptions));
+            _options = (Options)GetDialogPage(typeof(Options));
+
+            Logger.Initialize(this, Vsix.Name);
+
+            PollForStatus();
+
+
+            ////call the timer code first without waiting for timer trigger
+            //OnTimerTick(null, null);
+
+            ////Set the timer
+            _timer = new System.Timers.Timer();
+            //_timer.Interval = TimeSpan.FromSeconds(_options.Interval).TotalMilliseconds;
+            //_timer.Elapsed += OnTimerTick;
+            //_timer.Start();
+
+        }
+
+        private void PollForStatus()
+        {
             if (_options != null)
             {
                 _options.OnOptionsChanged += OnOptionsChanged;
             }
 
-            //call the timer code first without waiting for timer trigger
-            OnTimerTick(null, null);
+            var interval = _options?.Interval ?? 5;
 
-            //Set the timer
-            _timer = new Timer();
-            _timer.Interval = TimeSpan.FromSeconds(_options.Interval).TotalMilliseconds;
-            _timer.Elapsed += OnTimerTick;
-            _timer.Start();
-
+            // https://github.com/LeeCampbell/RxCookbook/blob/master/Repository/Polling.md
+            _subscription = _monitor.Poll<VSTSStatusResponse>(TimeSpan.FromSeconds(interval))
+                .Subscribe(res =>
+                {
+                    res.Switch(r => { Logger.Log(r.Status.Message); },
+                        e => { Logger.Log(e.Message); });
+                });
         }
 
         private void WriteToOutputWindow(string message)
@@ -85,60 +132,66 @@ namespace VSTSStatusMonitor
             StatusBar.Animation(1, ref hdcObject);
         }
 
-        private void OnTimerTick(object sender, ElapsedEventArgs e)
-        {
-            Debug.WriteLine($"{DateTime.Now:dd-MM-yyyy HH:mm:ss}: Checking VSTS status");
-            try
-            {
-                //set icon to unknown till processing
-                SetIcon(Resources.waiting);
+        //private void OnTimerTick(object sender, ElapsedEventArgs e)
+        //{
+        //    Debug.WriteLine($"{DateTime.Now:dd-MM-yyyy HH:mm:ss}: Checking VSTS status");
+        //    try
+        //    {
+        //        //set icon to unknown till processing
+        //        //SetIcon();
 
-                using (var client = new HttpClient())
-                {
-                    var response = client.GetAsync("https://www.visualstudio.com/wp-json/vscom/v1/service-status").GetAwaiter()
-                        .GetResult();
+        //        using (var client = new HttpClient())
+        //        {
+        //            var response = client.GetAsync("https://www.visualstudio.com/wp-json/vscom/v1/service-status").GetAwaiter()
+        //                .GetResult();
 
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        SetIcon(Resources.unknown);
-                        WriteToOutputWindow("Could not parse the status. Please visit https://www.visualstudio.com/team-services/support");
-                        return;
-                    }
-                    var content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        //            if (!response.IsSuccessStatusCode)
+        //            {
+        //                //SetIcon(Resources.unknown);
+        //                WriteToOutputWindow("Could not parse the status. Please visit https://www.visualstudio.com/team-services/support");
+        //                return;
+        //            }
+        //            var content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-                    var vstsResponse = JsonConvert.DeserializeObject<VSTSStatusResponse>(content);
+        //            var vstsResponse = JsonConvert.DeserializeObject<VSTSStatusResponse>(content);
 
 
-                    if (string.Equals("maintenance", vstsResponse.Status, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        SetIcon(Resources.red);
-                        WriteToOutputWindow($"{vstsResponse.Title} - {vstsResponse.Message}. Please visit https://blogs.msdn.com/b/vsoservice/ for details and history");
+        //            if (string.Equals("maintenance", vstsResponse.Status, StringComparison.InvariantCultureIgnoreCase))
+        //            {
+        //                //SetIcon(Resources.red);
+        //                WriteToOutputWindow($"{vstsResponse.Title} - {vstsResponse.Message}. Please visit https://blogs.msdn.com/b/vsoservice/ for details and history");
 
-                    }
-                    else if (string.Equals("available", vstsResponse.Status, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        SetIcon(Resources.green);
-                        WriteToOutputWindow($"{vstsResponse.Title} - {vstsResponse.Message}.");
+        //            }
+        //            else if (string.Equals("available", vstsResponse.Status, StringComparison.InvariantCultureIgnoreCase))
+        //            {
+        //                //SetIcon(Resources.green);
+        //                WriteToOutputWindow($"{vstsResponse.Title} - {vstsResponse.Message}.");
 
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                WriteToOutputWindow("Sorry, an exception occurred.");
-                WriteToOutputWindow(exception.ToString());
-            }
-        }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        WriteToOutputWindow("Sorry, an exception occurred.");
+        //        WriteToOutputWindow(exception.ToString());
+        //    }
+        //}
 
         private void OnOptionsChanged(object sender, OptionsChangedEventArgs e)
         {
-            _timer.Interval = TimeSpan.FromSeconds(e.Interval).TotalMilliseconds;
-            WriteToOutputWindow(String.Format("Interval changed to {0} seconds", e.Interval));
+            //_timer.Interval = TimeSpan.FromSeconds(e.Interval).TotalMilliseconds;
+            //WriteToOutputWindow(String.Format("Interval changed to {0} seconds", e.Interval));
+            if (_subscription != null)
+            {
+                _subscription.Dispose();
+            }
+            PollForStatus();
         }
         public IVsOutputWindow OutputWindow
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
                 if (_outputWindow == null)
                 {
                     _outputWindow = (IVsOutputWindow)GetService(typeof(SVsOutputWindow));
@@ -188,6 +241,17 @@ namespace VSTSStatusMonitor
             if (_timer != null)
             {
                 _timer.Dispose();
+            }
+        }
+
+        private static void LoadPackage()
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            var shell = (IVsShell)GetGlobalService(typeof(SVsShell));
+
+            if (shell.IsPackageLoaded(ref GuidList.guidVSOStatusPkg, out IVsPackage package) != VSConstants.S_OK)
+            {
+                ErrorHandler.Succeeded(shell.LoadPackage(ref GuidList.guidVSOStatusPkg, out package));
             }
         }
     }
