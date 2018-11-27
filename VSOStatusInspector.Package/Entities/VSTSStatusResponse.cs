@@ -5,6 +5,8 @@ namespace VSTSStatusMonitor.Entities
 {
     public class VSTSStatusResponse : IDisposable
     {
+        public DateTime LastChecked { get; set; }
+
         public Status Status { get; set; }
         public List<Service> Services { get; set; }
 

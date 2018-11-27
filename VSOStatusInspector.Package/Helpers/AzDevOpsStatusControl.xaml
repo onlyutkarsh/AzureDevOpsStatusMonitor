@@ -26,18 +26,57 @@
             Width="16"
             Height="16"
             Moniker="{x:Static catalog:KnownMonikers.StatusOK}"
-            ToolTipService.ShowDuration="5000">
+            ToolTipService.ShowDuration="15000">
             <imaging:CrispImage.ToolTip>
                 <StackPanel>
-                    <TextBlock
-                        Margin="0,0,0,5"
-                        FontSize="14"
-                        FontWeight="Bold">
-                        Open file
-                    </TextBlock>
-                    <TextBlock>
-                        Search your computer or local network<LineBreak />
-                        for a file and open it for editing.</TextBlock>
+                    <WrapPanel>
+                        <imaging:CrispImage
+                            Width="16"
+                            Height="16"
+                            Margin="0,0,5,0"
+                            Moniker="{x:Static catalog:KnownMonikers.StatusOK}" />
+                        <TextBlock
+                            Name="txtOverallStatus"
+                            Margin="0,0,0,5"
+                            FontSize="14"
+                            FontWeight="Bold">
+                            Everything is looking good
+                        </TextBlock>
+                    </WrapPanel>
+                    <Border
+                        Margin="0,8"
+                        BorderBrush="Silver"
+                        BorderThickness="0,1,0,0" />
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Content="Core Services"
+                            FontWeight="Bold" />
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Content="USA"
+                            FontWeight="Bold" />
+                    </Grid>
                     <Border
                         Margin="0,8"
                         BorderBrush="Silver"
@@ -48,7 +87,7 @@
                             Height="16"
                             Margin="0,0,5,0"
                             Moniker="{x:Static catalog:KnownMonikers.StatusInformationOutline}" />
-                        <TextBlock Name="lastChecked">By Utkarsh Shigihalli</TextBlock>
+                        <TextBlock Name="lastChecked" />
                     </WrapPanel>
                 </StackPanel>
             </imaging:CrispImage.ToolTip>

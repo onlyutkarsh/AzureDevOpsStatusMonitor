@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VSTSStatusMonitor.Entities;
 
 namespace VSTSStatusMonitor.Helpers
 {
@@ -29,9 +30,10 @@ namespace VSTSStatusMonitor.Helpers
             InitializeComponent();
         }
 
-        private void VSTSStatusChanged(object sender, string e)
+        private void VSTSStatusChanged(object sender, VSTSStatusResponse e)
         {
-            lastChecked.Text = e;
+            txtOverallStatus.Text = e.Status.Message;
+            lastChecked.Text = e.LastChecked.ToString();
         }
     }
 }

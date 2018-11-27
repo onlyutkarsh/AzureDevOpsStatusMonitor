@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -14,7 +15,8 @@ using Task = System.Threading.Tasks.Task;
 
 namespace VSTSStatusMonitor
 {
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly",
+        Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [Guid(GuidList.guidVSOStatusPkgString)]
@@ -32,14 +34,16 @@ namespace VSTSStatusMonitor
         private IDisposable _subscription;
         private AzDevOpsStatusControl _azDevOpsStatusControl;
         private StatusBarManager _statusBarManager;
-        public event EventHandler<string> OnStatusChanged;
-        protected virtual void OnOnStatusChanged(string e)
+        public event EventHandler<VSTSStatusResponse> OnStatusChanged;
+
+        protected void OnOnStatusChanged(VSTSStatusResponse response)
         {
             if (OnStatusChanged != null)
             {
-                OnStatusChanged(this, e);
+                OnStatusChanged(this, response);
             }
         }
+
         public static Options Options
         {
             get
@@ -60,13 +64,14 @@ namespace VSTSStatusMonitor
         }
 
 
-        protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        protected override async Task InitializeAsync(CancellationToken cancellationToken,
+            IProgress<ServiceProgressData> progress)
         {
             // Switches to the UI thread in order to consume some services used in command initialization
             await JoinableTaskFactory.SwitchToMainThreadAsync();
 
             //get interval from options
-            _options = (Options)GetDialogPage(typeof(Options));
+            _options = (Options) GetDialogPage(typeof(Options));
 
             Logger.Initialize(this, Vsix.Name);
 
@@ -87,26 +92,25 @@ namespace VSTSStatusMonitor
             var interval = Options?.Interval ?? 5;
 
             // https://github.com/LeeCampbell/RxCookbook/blob/master/Repository/Polling.md
-            _subscription = _monitor.Poll<VSTSStatusResponse>(TimeSpan.FromSeconds(interval))
+            _subscription = _monitor
+                .GetStatusAsync()
+                .Poll(TimeSpan.FromSeconds(interval))
                 .Subscribe(res =>
                 {
                     res.Switch(async r =>
                         {
-                            await UpdateInfoBar().ConfigureAwait(false);
+                            await UpdateInfoBar(r).ConfigureAwait(false);
                             Logger.Log(r.Status.Message);
                         },
-                        e =>
-                        {
-                            Logger.Log(e.Message);
-                        });
+                        e => { Logger.Log(e.Message); });
                 });
 
         }
 
-        private async Task UpdateInfoBar()
+        private async Task UpdateInfoBar(VSTSStatusResponse vstsStatusResponse)
         {
             await JoinableTaskFactory.SwitchToMainThreadAsync();
-            OnOnStatusChanged(DateTime.Now.ToString());
+            OnOnStatusChanged(vstsStatusResponse);
         }
 
         private void OnOptionsChanged(object sender, OptionsChangedEventArgs e)
@@ -115,8 +119,10 @@ namespace VSTSStatusMonitor
             {
                 _subscription.Dispose();
             }
+
             PollForStatus();
         }
+
         public IVsOutputWindow OutputWindow
         {
             get
@@ -124,9 +130,10 @@ namespace VSTSStatusMonitor
                 ThreadHelper.ThrowIfNotOnUIThread();
                 if (_outputWindow == null)
                 {
-                    _outputWindow = (IVsOutputWindow)GetService(typeof(SVsOutputWindow));
+                    _outputWindow = (IVsOutputWindow) GetService(typeof(SVsOutputWindow));
                     return _outputWindow;
                 }
+
                 return _outputWindow;
             }
         }
@@ -134,7 +141,7 @@ namespace VSTSStatusMonitor
         private static void LoadPackage()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            var shell = (IVsShell)GetGlobalService(typeof(SVsShell));
+            var shell = (IVsShell) GetGlobalService(typeof(SVsShell));
 
             if (shell.IsPackageLoaded(ref GuidList.guidVSOStatusPkg, out IVsPackage package) != VSConstants.S_OK)
             {
