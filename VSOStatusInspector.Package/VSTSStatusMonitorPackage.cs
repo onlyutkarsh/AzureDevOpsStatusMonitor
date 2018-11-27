@@ -22,7 +22,7 @@ namespace VSTSStatusMonitor
     [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideBindingPath]
     [ProvideOptionPage(typeof(Options), EXTENSION_NAME, "General", 0, 0, true)]
-    public sealed class VSTSStatusMonitorPackage : AsyncPackage
+    public class VSTSStatusMonitorPackage : AsyncPackage
     {
         private const string EXTENSION_NAME = "VSTS Status Monitor";
         private static Options _options;
@@ -32,7 +32,14 @@ namespace VSTSStatusMonitor
         private IDisposable _subscription;
         private AzDevOpsStatusControl _azDevOpsStatusControl;
         private StatusBarManager _statusBarManager;
-
+        public event EventHandler<string> OnStatusChanged;
+        protected virtual void OnOnStatusChanged(string e)
+        {
+            if (OnStatusChanged != null)
+            {
+                OnStatusChanged(this, e);
+            }
+        }
         public static Options Options
         {
             get
@@ -68,7 +75,7 @@ namespace VSTSStatusMonitor
                 Options.OnOptionsChanged += OnOptionsChanged;
             }
 
-            _azDevOpsStatusControl = new AzDevOpsStatusControl();
+            _azDevOpsStatusControl = new AzDevOpsStatusControl(this);
             _statusBarManager = new StatusBarManager(Application.Current.MainWindow);
             _statusBarManager.InjectControl(_azDevOpsStatusControl);
 
@@ -83,9 +90,9 @@ namespace VSTSStatusMonitor
             _subscription = _monitor.Poll<VSTSStatusResponse>(TimeSpan.FromSeconds(interval))
                 .Subscribe(res =>
                 {
-                    res.Switch(
-                        r =>
+                    res.Switch(async r =>
                         {
+                            await UpdateInfoBar().ConfigureAwait(false);
                             Logger.Log(r.Status.Message);
                         },
                         e =>
@@ -99,6 +106,7 @@ namespace VSTSStatusMonitor
         private async Task UpdateInfoBar()
         {
             await JoinableTaskFactory.SwitchToMainThreadAsync();
+            OnOnStatusChanged(DateTime.Now.ToString());
         }
 
         private void OnOptionsChanged(object sender, OptionsChangedEventArgs e)

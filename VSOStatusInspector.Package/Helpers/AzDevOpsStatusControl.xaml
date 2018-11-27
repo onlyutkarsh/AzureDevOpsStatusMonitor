@@ -1,23 +1,61 @@
-﻿<UserControl x:Class="VSTSStatusMonitor.Helpers.AzDevOpsStatusControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VSTSStatusMonitor.Helpers"
-             xmlns:catalog="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.ImageCatalog"
-             xmlns:imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging"
-             xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Imaging"
-             xmlns:vsp="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
-             xmlns:platformUi1="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Utilities"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             HorizontalAlignment="Right" VerticalAlignment="Stretch">
+﻿<UserControl
+    x:Class="VSTSStatusMonitor.Helpers.AzDevOpsStatusControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:catalog="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.ImageCatalog"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Imaging"
+    xmlns:platformUi1="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Utilities"
+    HorizontalAlignment="Right"
+    VerticalAlignment="Stretch"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
     <UserControl.Resources>
-        <platformUi1:BrushToColorConverter x:Key="BrushToColorConverter"/>
-</UserControl.Resources>
-    <StackPanel Name="stackPanel" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0" ToolTip="Hello World!"
-                platformUi:ImageThemingUtilities.ImageBackgroundColor="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushToColorConverter}}">
-        <imaging:CrispImage Width="16" Height="16" Moniker="{x:Static catalog:KnownMonikers.StatusOK}" />
+        <platformUi1:BrushToColorConverter x:Key="BrushToColorConverter" />
+    </UserControl.Resources>
+    <StackPanel
+        Name="stackPanel"
+        Margin="5,0"
+        VerticalAlignment="Center"
+        platformUi:ImageThemingUtilities.ImageBackgroundColor="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushToColorConverter}}"
+        Orientation="Horizontal">
+        <imaging:CrispImage
+            Width="16"
+            Height="16"
+            Moniker="{x:Static catalog:KnownMonikers.StatusOK}"
+            ToolTipService.ShowDuration="5000">
+            <imaging:CrispImage.ToolTip>
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontSize="14"
+                        FontWeight="Bold">
+                        Open file
+                    </TextBlock>
+                    <TextBlock>
+                        Search your computer or local network<LineBreak />
+                        for a file and open it for editing.</TextBlock>
+                    <Border
+                        Margin="0,8"
+                        BorderBrush="Silver"
+                        BorderThickness="0,1,0,0" />
+                    <WrapPanel>
+                        <imaging:CrispImage
+                            Width="16"
+                            Height="16"
+                            Margin="0,0,5,0"
+                            Moniker="{x:Static catalog:KnownMonikers.StatusInformationOutline}" />
+                        <TextBlock Name="lastChecked">By Utkarsh Shigihalli</TextBlock>
+                    </WrapPanel>
+                </StackPanel>
+            </imaging:CrispImage.ToolTip>
+        </imaging:CrispImage>
+
+
+
         <!--<imaging:CrispImage Width="16" Height="16" Moniker="{x:Static catalog:KnownMonikers.StatusError}" />
         <imaging:CrispImage Width="16" Height="16" Moniker="{x:Static catalog:KnownMonikers.StatusInformation}" />
         <imaging:CrispImage Width="16" Height="16" Moniker="{x:Static catalog:KnownMonikers.StatusWarning}" />-->

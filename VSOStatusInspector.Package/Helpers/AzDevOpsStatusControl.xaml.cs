@@ -20,9 +20,18 @@ namespace VSTSStatusMonitor.Helpers
     /// </summary>
     public partial class AzDevOpsStatusControl : UserControl
     {
-        public AzDevOpsStatusControl()
+        private VSTSStatusMonitorPackage _packaage;
+
+        public AzDevOpsStatusControl(VSTSStatusMonitorPackage vstsStatusMonitorPackage)
         {
+            _packaage = vstsStatusMonitorPackage;
+            _packaage.OnStatusChanged += VSTSStatusChanged;
             InitializeComponent();
+        }
+
+        private void VSTSStatusChanged(object sender, string e)
+        {
+            lastChecked.Text = e;
         }
     }
 }
