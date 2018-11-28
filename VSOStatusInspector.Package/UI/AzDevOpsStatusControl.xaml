@@ -1,0 +1,74 @@
+﻿<UserControl
+    x:Class="VSTSStatusMonitor.UI.AzDevOpsStatusControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:catalog="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.ImageCatalog"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Imaging"
+    xmlns:platformUi1="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Utilities"
+    xmlns:ui="clr-namespace:VSTSStatusMonitor.UI"
+    HorizontalAlignment="Right"
+    VerticalAlignment="Stretch"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <platformUi1:BrushToColorConverter x:Key="BrushToColorConverter" />
+    </UserControl.Resources>
+    <StackPanel
+        Name="stackPanel"
+        Margin="5,0"
+        VerticalAlignment="Center"
+        platformUi:ImageThemingUtilities.ImageBackgroundColor="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushToColorConverter}}"
+        Orientation="Horizontal">
+        <imaging:CrispImage
+            Name="imgStatus"
+            Width="16"
+            Height="16"
+            Moniker="{x:Static ui:MyMonikers.Boards}"
+            ToolTipService.ShowDuration="15000">
+            <imaging:CrispImage.ToolTip>
+                <StackPanel>
+                    <WrapPanel>
+                        <imaging:CrispImage
+                            Name="imgStatusHeader"
+                            Width="16"
+                            Height="16"
+                            Margin="0,0,5,0"
+                            Moniker="{x:Static ui:MyMonikers.Artifacts}" />
+                        <TextBlock
+                            Name="txtOverallStatus"
+                            Margin="0,0,0,5"
+                            FontSize="14"
+                            FontWeight="Bold" />
+                    </WrapPanel>
+                    <Border
+                        Margin="0,8"
+                        BorderBrush="Silver"
+                        BorderThickness="0,1,0,0" />
+
+                    <Border
+                        Margin="0,8"
+                        BorderBrush="Silver"
+                        BorderThickness="0,1,0,0" />
+                    <WrapPanel>
+                        <imaging:CrispImage
+                            Width="16"
+                            Height="16"
+                            Margin="0,0,5,0"
+                            Moniker="{x:Static catalog:KnownMonikers.StatusInformationOutline}" />
+                        <TextBlock Name="lastChecked" />
+                    </WrapPanel>
+                </StackPanel>
+            </imaging:CrispImage.ToolTip>
+        </imaging:CrispImage>
+
+
+
+        <!--<imaging:CrispImage Width="16" Height="16" Moniker="{x:Static catalog:KnownMonikers.StatusError}" />
+        <imaging:CrispImage Width="16" Height="16" Moniker="{x:Static catalog:KnownMonikers.StatusInformation}" />
+        <imaging:CrispImage Width="16" Height="16" Moniker="{x:Static catalog:KnownMonikers.StatusWarning}" />-->
+    </StackPanel>
+</UserControl>

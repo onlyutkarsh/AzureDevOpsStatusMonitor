@@ -11,6 +11,7 @@ using System.Windows;
 using VSTSStatusMonitor.Entities;
 using VSTSStatusMonitor.Helpers;
 using VSTSStatusMonitor.Service;
+using VSTSStatusMonitor.UI;
 using Task = System.Threading.Tasks.Task;
 
 namespace VSTSStatusMonitor
