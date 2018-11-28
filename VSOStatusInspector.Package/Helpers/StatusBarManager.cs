@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace VSTSStatusMonitor
+namespace VSTSStatusMonitor.Helpers
 {
     internal class StatusBarManager
     {
