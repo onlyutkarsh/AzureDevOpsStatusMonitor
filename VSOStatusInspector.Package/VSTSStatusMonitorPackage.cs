@@ -97,20 +97,18 @@ namespace VSTSStatusMonitor
                 .Poll(TimeSpan.FromSeconds(interval))
                 .Subscribe(res =>
                 {
+#pragma warning disable VSTHRD101 // Avoid unsupported async delegates
                     res.Switch(async r =>
                         {
-                            await UpdateInfoBar(r).ConfigureAwait(false);
+                            r.LastChecked = DateTime.Now;
+                            await JoinableTaskFactory.SwitchToMainThreadAsync();
+                            OnOnStatusChanged(r);
                             Logger.Log(r.Status.Message);
                         },
+#pragma warning restore VSTHRD101 // Avoid unsupported async delegates
                         e => { Logger.Log(e.Message); });
                 });
 
-        }
-
-        private async Task UpdateInfoBar(VSTSStatusResponse vstsStatusResponse)
-        {
-            await JoinableTaskFactory.SwitchToMainThreadAsync();
-            OnOnStatusChanged(vstsStatusResponse);
         }
 
         private void OnOptionsChanged(object sender, OptionsChangedEventArgs e)

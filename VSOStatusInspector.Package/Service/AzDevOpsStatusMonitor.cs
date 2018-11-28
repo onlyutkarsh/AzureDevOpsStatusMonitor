@@ -1,14 +1,9 @@
 ﻿
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VSTSStatusMonitor.Entities;
-using VSTSStatusMonitor.Helpers;
 
 namespace VSTSStatusMonitor.Service
 {
@@ -19,13 +14,26 @@ namespace VSTSStatusMonitor.Service
             return Observable.FromAsync<VSTSStatusResponse>(async () =>
             {
                 var response = new VSTSStatusResponse();
-                response.Status = new Status
-                {
-                    Message = "Polling",
-                    Health = "All is good"
-                };
+                response.Status = new Status();
                 response.LastChecked = DateTime.Now;
-                return await Task.FromResult(response);
+
+                using (HttpClient client = new HttpClient())
+                {
+                    var rawResponse = await client.GetAsync("https://status.dev.azure.com/_apis/status/health").ConfigureAwait(false);
+                    if (!rawResponse.IsSuccessStatusCode)
+                    {
+                        response.Status.Health = "Unknown error occurred";
+                        response.Status.Message = "Error occurred here";
+                        return response;
+                    }
+
+                    var content = await rawResponse.Content.ReadAsStringAsync();
+
+                    response = JsonConvert.DeserializeObject<VSTSStatusResponse>(content);
+                }
+
+
+                return response;
             });
         }
     }

@@ -47,8 +47,9 @@
                         Margin="0,8"
                         BorderBrush="Silver"
                         BorderThickness="0,1,0,0" />
-                    <Grid>
+                    <Grid Name="grd">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -65,17 +66,378 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Label
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Content="Core Services"
-                            FontWeight="Bold" />
-                        <Label
+                            Name="lblUS"
                             Grid.Row="0"
                             Grid.Column="1"
-                            Content="USA"
                             FontWeight="Bold" />
+                        <Label
+                            Name="lblCA"
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            FontWeight="Bold" />
+                        <Label
+                            Name="lblBR"
+                            Grid.Row="0"
+                            Grid.Column="3"
+                            FontWeight="Bold" />
+                        <Label
+                            Name="lblEU"
+                            Grid.Row="0"
+                            Grid.Column="4"
+                            FontWeight="Bold" />
+                        <Label
+                            Name="lblAPAC"
+                            Grid.Row="0"
+                            Grid.Column="5"
+                            FontWeight="Bold" />
+                        <Label
+                            Name="lblAU"
+                            Grid.Row="0"
+                            Grid.Column="6"
+                            FontWeight="Bold" />
+                        <Label
+                            Name="lblIN"
+                            Grid.Row="0"
+                            Grid.Column="7"
+                            FontWeight="Bold" />
+                        <Label
+                            Name="lblCoreService"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            FontWeight="Bold" />
+                        <Label
+                            Name="lblBoards"
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            FontWeight="Bold" />
+                        <Label
+                            Name="lblRepos"
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            FontWeight="Bold" />
+                        <Label
+                            Name="lblPipelines"
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            FontWeight="Bold" />
+                        <Label
+                            Name="lblTestPlans"
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            FontWeight="Bold" />
+                        <Label
+                            Name="lblArtifacts"
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            FontWeight="Bold" />
+                        <Label
+                            Name="lblOtherServices"
+                            Grid.Row="7"
+                            Grid.Column="0"
+                            FontWeight="Bold" />
+                        <imaging:CrispImage
+                            Name="imgCoreUS"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgCoreCA"
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgCoreBR"
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgCoreEU"
+                            Grid.Row="1"
+                            Grid.Column="4"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgCoreAPAC"
+                            Grid.Row="1"
+                            Grid.Column="5"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgCoreAU"
+                            Grid.Row="1"
+                            Grid.Column="6"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgCoreIN"
+                            Grid.Row="1"
+                            Grid.Column="7"
+                            Width="16"
+                            Height="16" />
+
+                        <imaging:CrispImage
+                            Name="imgBoardsUS"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgBoardsCA"
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgBoardsBR"
+                            Grid.Row="2"
+                            Grid.Column="3"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgBoardsEU"
+                            Grid.Row="2"
+                            Grid.Column="4"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgBoardsAPAC"
+                            Grid.Row="2"
+                            Grid.Column="5"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgBoardsAU"
+                            Grid.Row="2"
+                            Grid.Column="6"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgBoardsIN"
+                            Grid.Row="2"
+                            Grid.Column="7"
+                            Width="16"
+                            Height="16" />
+
+                        <imaging:CrispImage
+                            Name="imgReposUS"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgReposCA"
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgReposBR"
+                            Grid.Row="3"
+                            Grid.Column="3"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgReposEU"
+                            Grid.Row="3"
+                            Grid.Column="4"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgReposAPAC"
+                            Grid.Row="3"
+                            Grid.Column="5"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgReposAU"
+                            Grid.Row="3"
+                            Grid.Column="6"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgReposIN"
+                            Grid.Row="3"
+                            Grid.Column="7"
+                            Width="16"
+                            Height="16" />
+
+                        <imaging:CrispImage
+                            Name="imgPipelinesUS"
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgPipelinesCA"
+                            Grid.Row="4"
+                            Grid.Column="2"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgPipelinesBR"
+                            Grid.Row="4"
+                            Grid.Column="3"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgPipelinesEU"
+                            Grid.Row="4"
+                            Grid.Column="4"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgPipelinesAPAC"
+                            Grid.Row="4"
+                            Grid.Column="5"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgPipelinesAU"
+                            Grid.Row="4"
+                            Grid.Column="6"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgPipelinesIN"
+                            Grid.Row="4"
+                            Grid.Column="7"
+                            Width="16"
+                            Height="16" />
+
+                        <imaging:CrispImage
+                            Name="imgTestPlansUS"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgTestPlansCA"
+                            Grid.Row="5"
+                            Grid.Column="2"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgTestPlansBR"
+                            Grid.Row="5"
+                            Grid.Column="3"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgTestPlansEU"
+                            Grid.Row="5"
+                            Grid.Column="4"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgTestPlansAPAC"
+                            Grid.Row="5"
+                            Grid.Column="5"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgTestPlansAU"
+                            Grid.Row="5"
+                            Grid.Column="6"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgTestPlansIN"
+                            Grid.Row="5"
+                            Grid.Column="7"
+                            Width="16"
+                            Height="16" />
+
+                        <imaging:CrispImage
+                            Name="imgArtifactsUS"
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgArtifactsCA"
+                            Grid.Row="6"
+                            Grid.Column="2"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgArtifactsBR"
+                            Grid.Row="6"
+                            Grid.Column="3"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgArtifactsEU"
+                            Grid.Row="6"
+                            Grid.Column="4"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgArtifactsAPAC"
+                            Grid.Row="6"
+                            Grid.Column="5"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgArtifactsAU"
+                            Grid.Row="6"
+                            Grid.Column="6"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgArtifactsIN"
+                            Grid.Row="6"
+                            Grid.Column="7"
+                            Width="16"
+                            Height="16" />
+
+                        <imaging:CrispImage
+                            Name="imgOthersUS"
+                            Grid.Row="7"
+                            Grid.Column="1"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgOthersCA"
+                            Grid.Row="7"
+                            Grid.Column="2"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgOthersBR"
+                            Grid.Row="7"
+                            Grid.Column="3"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgOthersEU"
+                            Grid.Row="7"
+                            Grid.Column="4"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgOthersAPAC"
+                            Grid.Row="7"
+                            Grid.Column="5"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgOthersAU"
+                            Grid.Row="7"
+                            Grid.Column="6"
+                            Width="16"
+                            Height="16" />
+                        <imaging:CrispImage
+                            Name="imgOthersIN"
+                            Grid.Row="7"
+                            Grid.Column="7"
+                            Width="16"
+                            Height="16" />
                     </Grid>
                     <Border
                         Margin="0,8"
