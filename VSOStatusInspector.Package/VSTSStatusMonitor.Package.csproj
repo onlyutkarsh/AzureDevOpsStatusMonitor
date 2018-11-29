@@ -224,6 +224,9 @@
   <ItemGroup>
     <Compile Include="EventArgs\OptionsChangedEventArgs.cs" />
     <Compile Include="Guids.cs" />
+    <Compile Include="Helpers\HyperlinkExtensions.cs" />
+    <Compile Include="MyImageIds.cs" />
+    <Compile Include="MyMonikers.cs" />
     <Compile Include="UI\AzDevOpsStatusControl.xaml.cs">
       <DependentUpon>AzDevOpsStatusControl.xaml</DependentUpon>
     </Compile>
@@ -246,8 +249,6 @@
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\MyImageIds.cs" />
-    <Compile Include="UI\MyMonikers.cs" />
     <Compile Include="VSTSStatusMonitorPackage.cs" />
     <Compile Include="Entities\VSTSStatusResponse.cs" />
   </ItemGroup>
@@ -266,6 +267,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Resource Include="Images\Advisory.png" />
+    <Resource Include="Images\Degraded.png" />
+    <Resource Include="Images\Healthy.png" />
+    <Resource Include="Images\Unhealthy.png" />
+    <Resource Include="Images\Artifacts.png" />
+    <Resource Include="Images\Boards.png" />
+    <Resource Include="Images\CoreServices.png" />
+    <Resource Include="Images\Pipelines.png" />
+    <Resource Include="Images\Repos.png" />
+    <Resource Include="Images\TestPlans.png" />
     <Content Include="Monikers.imagemanifest">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -279,18 +290,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Resource Include="Images\artifacts.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\boards.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\core-services.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\pipelines.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
     <Content Include="Resources\preview.png">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -305,12 +304,6 @@
     </None>
     <Resource Include="Resources\VSTSStatusInspectorPackage.ico" />
     <Resource Include="Resources\VSTSStatusInspector.ico" />
-    <Resource Include="Images\repos.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\test-plans.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
     <Content Include="Resources\waiting.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>

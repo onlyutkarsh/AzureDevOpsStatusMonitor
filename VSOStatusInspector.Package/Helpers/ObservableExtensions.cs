@@ -20,14 +20,10 @@ namespace VSTSStatusMonitor.Helpers
         public static IObservable<Try<T>> Poll<T>(this IObservable<T> source, TimeSpan period)
         {
             return Observable.Timer(TimeSpan.Zero, period)
-                    .SelectMany(_ => source) //Flatten the response sequence.
-                    .Select(Try<T>.Create) //Project successful values to the Try<T> return type.
-                    .Catch<Try<T>, Exception
-                    >(ex => Observable.Return(Try<T>.Fail(ex))) //Project exceptions to the Try<T> return type
-#if DEBUG
-                .Repeat() //Loop
-#endif
-                ;
+                .SelectMany(_ => source) //Flatten the response sequence.
+                .Select(Try<T>.Create) //Project successful values to the Try<T> return type.
+                .Catch<Try<T>, Exception>(ex => Observable.Return(Try<T>.Fail(ex))) //Project exceptions to the Try<T> return type
+                .Repeat(); //Loop
         }
     }
 }

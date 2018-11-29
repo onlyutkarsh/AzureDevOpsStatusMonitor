@@ -7,17 +7,21 @@
 
 using System;
 
-namespace VSTSStatusMonitor.UI
+namespace VSTSStatusMonitor
 {
     public static class MyImageIds
     {
         public static readonly Guid MonikersGuid = new Guid("{ef144e7d-307f-4ad5-8de7-865f7deb3f6d}");
 
-        public const int Artifacts = 0;
-        public const int Boards = 1;
-        public const int CoreServices = 2;
-        public const int Repos = 3;
-        public const int TestPlans = 4;
-        public const int Pipelines = 5;
+        public const int Advisory = 11;
+        public const int Artifacts = 12;
+        public const int Boards = 13;
+        public const int CoreServices = 14;
+        public const int Degraded = 15;
+        public const int Healthy = 16;
+        public const int Pipelines = 17;
+        public const int Repos = 18;
+        public const int TestPlans = 19;
+        public const int Unhealthy = 10;
     }
 }

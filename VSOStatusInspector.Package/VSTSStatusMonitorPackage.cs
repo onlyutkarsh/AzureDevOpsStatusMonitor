@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -72,7 +71,7 @@ namespace VSTSStatusMonitor
             await JoinableTaskFactory.SwitchToMainThreadAsync();
 
             //get interval from options
-            _options = (Options) GetDialogPage(typeof(Options));
+            _options = (Options)GetDialogPage(typeof(Options));
 
             Logger.Initialize(this, Vsix.Name);
 
@@ -95,21 +94,22 @@ namespace VSTSStatusMonitor
             // https://github.com/LeeCampbell/RxCookbook/blob/master/Repository/Polling.md
             _subscription = _monitor
                 .GetStatusAsync()
+                .Timeout(TimeSpan.FromSeconds(30))
                 .Poll(TimeSpan.FromSeconds(interval))
                 .Subscribe(res =>
                 {
-#pragma warning disable VSTHRD101 // Avoid unsupported async delegates
                     res.Switch(async r =>
                         {
-                            r.LastChecked = DateTime.Now;
                             await JoinableTaskFactory.SwitchToMainThreadAsync();
                             OnOnStatusChanged(r);
                             Logger.Log(r.Status.Message);
                         },
-#pragma warning restore VSTHRD101 // Avoid unsupported async delegates
-                        e => { Logger.Log(e.Message); });
+                        async e =>
+                        {
+                            await JoinableTaskFactory.SwitchToMainThreadAsync();
+                            OnOnStatusChanged(null);
+                        });
                 });
-
         }
 
         private void OnOptionsChanged(object sender, OptionsChangedEventArgs e)
@@ -129,7 +129,7 @@ namespace VSTSStatusMonitor
                 ThreadHelper.ThrowIfNotOnUIThread();
                 if (_outputWindow == null)
                 {
-                    _outputWindow = (IVsOutputWindow) GetService(typeof(SVsOutputWindow));
+                    _outputWindow = (IVsOutputWindow)GetService(typeof(SVsOutputWindow));
                     return _outputWindow;
                 }
 
@@ -140,7 +140,7 @@ namespace VSTSStatusMonitor
         private static void LoadPackage()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            var shell = (IVsShell) GetGlobalService(typeof(SVsShell));
+            var shell = (IVsShell)GetGlobalService(typeof(SVsShell));
 
             if (shell.IsPackageLoaded(ref GuidList.guidVSOStatusPkg, out IVsPackage package) != VSConstants.S_OK)
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Windows;
 using Microsoft.VisualStudio.Shell;
 
 namespace VSTSStatusMonitor
@@ -14,6 +15,7 @@ namespace VSTSStatusMonitor
         [Category("General")]
         [DisplayName(@"Polling Interval (in seconds)")]
         [Description("Number of seconds between each poll.")]
+        [DefaultValue(300)]
         public int Interval
         {
             get { return _interval; }
@@ -22,6 +24,18 @@ namespace VSTSStatusMonitor
 
         protected override void OnApply(PageApplyEventArgs e)
         {
+#if !DEBUG
+            if (Interval < 300)
+            {
+                MessageBox.Show("Interval cannot be less than 300 seconds (5 min)", Vsix.Name, MessageBoxButton.OK, MessageBoxImage.Information);
+                Interval = 300;
+                e.ApplyBehavior = ApplyKind.Cancel;
+            }
+#else
+
+            Interval = 10;
+            e.ApplyBehavior = ApplyKind.Apply;
+#endif
             base.OnApply(e);
             if (OnOptionsChanged != null)
             {

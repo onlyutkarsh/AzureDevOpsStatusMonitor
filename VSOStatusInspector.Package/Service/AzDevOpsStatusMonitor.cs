@@ -4,6 +4,7 @@ using System;
 using System.Net.Http;
 using System.Reactive.Linq;
 using VSTSStatusMonitor.Entities;
+using VSTSStatusMonitor.Helpers;
 
 namespace VSTSStatusMonitor.Service
 {
@@ -17,22 +18,30 @@ namespace VSTSStatusMonitor.Service
                 response.Status = new Status();
                 response.LastChecked = DateTime.Now;
 
-                using (HttpClient client = new HttpClient())
+                try
                 {
-                    var rawResponse = await client.GetAsync("https://status.dev.azure.com/_apis/status/health").ConfigureAwait(false);
-                    if (!rawResponse.IsSuccessStatusCode)
+                    using (HttpClient client = new HttpClient())
                     {
-                        response.Status.Health = "Unknown error occurred";
-                        response.Status.Message = "Error occurred here";
-                        return response;
+                        var rawResponse = await client.GetAsync("https://status.dev.azure.com/_apis/status/health").ConfigureAwait(false);
+                        if (!rawResponse.IsSuccessStatusCode)
+                        {
+                            response.Status.Health = "Unknown error occurred";
+                            response.Status.Message = "Error occurred here";
+                            return response;
+                        }
+
+                        var content = await rawResponse.Content.ReadAsStringAsync();
+
+                        response = JsonConvert.DeserializeObject<VSTSStatusResponse>(content);
                     }
-
-                    var content = await rawResponse.Content.ReadAsStringAsync();
-
-                    response = JsonConvert.DeserializeObject<VSTSStatusResponse>(content);
                 }
-
-
+                catch (Exception exception)
+                {
+                    string message = "Error occurred while fetching status";
+                    response.Status.Health = message;
+                    Logger.Log(message);
+                    Logger.Log(exception.ToString());
+                }
                 return response;
             });
         }

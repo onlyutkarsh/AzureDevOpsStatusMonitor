@@ -5,41 +5,65 @@
   <Symbols>
     <String Name="Resources" Value="/VSTSStatusMonitor;Component/Images" />
     <Guid Name="MonikersGuid" Value="{ef144e7d-307f-4ad5-8de7-865f7deb3f6d}" />
-    <ID Name="Artifacts" Value="0" />
-    <ID Name="Boards" Value="1" />
-    <ID Name="CoreServices" Value="2" />
-    <ID Name="Repos" Value="3" />
-    <ID Name="TestPlans" Value="4" />
-    <ID Name="Pipelines" Value="5" />
+    <ID Name="Advisory" Value="11" />
+    <ID Name="Artifacts" Value="12" />
+    <ID Name="Boards" Value="13" />
+    <ID Name="CoreServices" Value="14" />
+    <ID Name="Degraded" Value="15" />
+    <ID Name="Healthy" Value="16" />
+    <ID Name="Pipelines" Value="17" />
+    <ID Name="Repos" Value="18" />
+    <ID Name="TestPlans" Value="19" />
+    <ID Name="Unhealthy" Value="10" />
   </Symbols>
   <Images>
+    <Image Guid="$(MonikersGuid)" ID="$(Advisory)">
+      <Source Uri="$(Resources)/Advisory.png">
+        <Size Value="16" />
+      </Source>
+    </Image>
     <Image Guid="$(MonikersGuid)" ID="$(Artifacts)">
-      <Source Uri="$(Resources)/artifacts.png">
+      <Source Uri="$(Resources)/Artifacts.png">
         <Size Value="16" />
       </Source>
     </Image>
     <Image Guid="$(MonikersGuid)" ID="$(Boards)">
-      <Source Uri="$(Resources)/boards.png">
+      <Source Uri="$(Resources)/Boards.png">
         <Size Value="16" />
       </Source>
     </Image>
     <Image Guid="$(MonikersGuid)" ID="$(CoreServices)">
-      <Source Uri="$(Resources)/core-services.png">
+      <Source Uri="$(Resources)/CoreServices.png">
         <Size Value="16" />
       </Source>
     </Image>
-    <Image Guid="$(MonikersGuid)" ID="$(Repos)">
-      <Source Uri="$(Resources)/repos.png">
+    <Image Guid="$(MonikersGuid)" ID="$(Degraded)">
+      <Source Uri="$(Resources)/Degraded.png">
         <Size Value="16" />
       </Source>
     </Image>
-    <Image Guid="$(MonikersGuid)" ID="$(TestPlans)">
-      <Source Uri="$(Resources)/test-plans.png">
+    <Image Guid="$(MonikersGuid)" ID="$(Healthy)">
+      <Source Uri="$(Resources)/Healthy.png">
         <Size Value="16" />
       </Source>
     </Image>
     <Image Guid="$(MonikersGuid)" ID="$(Pipelines)">
-      <Source Uri="$(Resources)/pipelines.png">
+      <Source Uri="$(Resources)/Pipelines.png">
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(MonikersGuid)" ID="$(Repos)">
+      <Source Uri="$(Resources)/Repos.png">
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(MonikersGuid)" ID="$(TestPlans)">
+      <Source Uri="$(Resources)/TestPlans.png">
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(MonikersGuid)" ID="$(Unhealthy)">
+      <Source Uri="$(Resources)/Unhealthy.png">
         <Size Value="16" />
       </Source>
     </Image>
