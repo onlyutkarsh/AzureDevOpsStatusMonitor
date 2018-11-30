@@ -4,12 +4,12 @@ mode: ContinuousDeployment
 branches:
   master:
     tag: ''
-  releases:
+  release:
     tag: rc
   feature:
     tag: useBranchName
     increment: Patch
-  pull-requests:
+  pull-request:
     tag: pr
   hotfix:
     tag: rc
