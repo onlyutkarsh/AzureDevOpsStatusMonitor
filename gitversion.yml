@@ -17,3 +17,4 @@ branches:
     tag: s
   develop:
     tag: beta
+    increment: Patch
