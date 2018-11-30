@@ -6,7 +6,7 @@
     <Description xml:space="preserve">Monitor status of Azure DevOps Service inside Visual Studio</Description>
     <Icon>Images\Package.ico</Icon>
     <PreviewImage>Images\preview.png</PreviewImage>
-    <Tags>Azure DevOps, Azure DevOps Service, VSTS, Monitor, Status, Inspector</Tags>
+    <Tags>Azure DevOps,Azure DevOps Service,Monitor,Status</Tags>
   </Metadata>
   <Installation>
     <InstallationTarget Version="[14.0,17.0)" Id="Microsoft.VisualStudio.Community" />

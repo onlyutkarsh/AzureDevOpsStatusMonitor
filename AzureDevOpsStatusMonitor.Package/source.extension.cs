@@ -13,6 +13,6 @@ namespace AzureDevOpsStatusMonitor
         public const string Language = "en-US";
         public const string Version = "1.4";
         public const string Author = "Utkarsh Shigihalli and Tarun Arora";
-        public const string Tags = "Azure DevOps, Azure DevOps Service, VSTS, Monitor, Status, Inspector";
+        public const string Tags = "Azure DevOps,Azure DevOps Service,Monitor,Status";
     }
 }
