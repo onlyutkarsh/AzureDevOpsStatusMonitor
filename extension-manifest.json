@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json.schemastore.org/vsix-publish",
+  "categories": [ "VisualStudioExtensions", "Other", "Services" ],
+  "identity": {
+    "internalName": "VSTSStatusInspector"
+  },
+  "assetFiles": [
+    {
+      "pathOnDisk": "screenshots\\screenshot.png",
+      "targetPath": "screenshots/screenshot.png"
+    },
+    {
+      "pathOnDisk": "screenshots\\options.png",
+      "targetPath": "screenshots/options.png"
+    }
+  ],
+  "overview": "README.md",
+  "priceCategory": "free",
+  "publisher": "UtkarshShigihalliandTarunArora",
+  "private": false,
+  "qna": true,
+  "repo": "https://github.com/onlyutkarsh/VSOStatusInspector"
+}

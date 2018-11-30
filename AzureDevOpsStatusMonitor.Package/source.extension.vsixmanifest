@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Id="beb913a8-333c-41b1-a736-878cebad3bc6" Version="1.4" Language="en-US" Publisher="Utkarsh Shigihalli and Tarun Arora" />
+    <DisplayName>Azure DevOps Status Monitor</DisplayName>
+    <Description xml:space="preserve">Monitor status of Azure DevOps Service inside Visual Studio</Description>
+    <Icon>Images\Package.ico</Icon>
+    <PreviewImage>Images\preview.png</PreviewImage>
+    <Tags>Azure DevOps,Azure DevOps Service,Monitor,Status</Tags>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Version="[14.0,17.0)" Id="Microsoft.VisualStudio.Community" />
+  </Installation>
+  <Dependencies>
+  </Dependencies>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="..\_ExternalReferences\Newtonsoft.Json.dll" AssemblyName="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed" />
+  </Assets>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
+  </Prerequisites>
+</PackageManifest>
