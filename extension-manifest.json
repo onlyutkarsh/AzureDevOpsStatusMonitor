@@ -2,7 +2,7 @@
   "$schema": "http://json.schemastore.org/vsix-publish",
   "categories": [ "Coding", "Source Control", "Team Development" ],
   "identity": {
-    "vsixId": "AzureDevOpsStatusMonitor",
+    "vsixId": "VSTSStatusInspector",
     "version": "1.0.0",
     "description": "Monitor Azure DevOps Service status from within Visual Studio",
     "displayName": "Azure DevOps Status Monitor",
@@ -28,7 +28,7 @@
   ],
   "overview": "README.md",
   "priceCategory": "free",
-  "publisher": "onlyutkarsh",
+  "publisher": "UtkarshShigihalliandTarunArora",
   "private": false,
   "qna": true,
   "repo": "https://github.com/onlyutkarsh/VSOStatusInspector"

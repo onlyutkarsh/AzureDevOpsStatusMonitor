@@ -1,0 +1,19 @@
+next-version: 1.0
+assembly-informational-format: '{MajorMinorPatch}'
+mode: ContinuousDeployment
+branches:
+  master:
+    tag: ''
+  releases?[/-]:
+    tag: rc
+  features?[/-]:
+    tag: useBranchName
+    increment: Patch
+  (pull|pull\-requests|pr)[/-]:
+    tag: pr
+  hotfix(es)?[/-]:
+    tag: rc
+  support[/-]:
+    tag: s
+  dev(elop)?(ment)?$:
+    tag: beta

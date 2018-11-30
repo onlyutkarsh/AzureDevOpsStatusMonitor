@@ -8,6 +8,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{B5452847
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		appveyor.yml = appveyor.yml
+		extension-manifest.json = extension-manifest.json
+		gitversion.yml = gitversion.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
