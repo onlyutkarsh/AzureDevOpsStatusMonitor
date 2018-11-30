@@ -8,7 +8,7 @@ namespace AzureDevOpsStatusMonitor
     static class Vsix
     {
         public const string Id = "beb913a8-333c-41b1-a736-878cebad3bc6";
-        public const string Name = "VSTSStatusInspector";
+        public const string Name = "Azure DevOps Status Monitor";
         public const string Description = @"Monitor status of Azure DevOps Service inside Visual Studio";
         public const string Language = "en-US";
         public const string Version = "1.4";

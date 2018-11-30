@@ -2,7 +2,7 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
     <Identity Id="beb913a8-333c-41b1-a736-878cebad3bc6" Version="1.4" Language="en-US" Publisher="Utkarsh Shigihalli and Tarun Arora" />
-    <DisplayName>VSTSStatusInspector</DisplayName>
+    <DisplayName>Azure DevOps Status Monitor</DisplayName>
     <Description xml:space="preserve">Monitor status of Azure DevOps Service inside Visual Studio</Description>
     <Icon>Images\Package.ico</Icon>
     <PreviewImage>Images\preview.png</PreviewImage>
