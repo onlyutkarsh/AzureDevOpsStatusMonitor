@@ -2,6 +2,7 @@
   "$schema": "http://json.schemastore.org/vsix-publish",
   "categories": [ "Coding", "Source Control", "Team Development" ],
   "identity": {
+    "internalName": "VSTSStatusInspector",
     "vsixId": "VSTSStatusInspector",
     "version": "1.0.0",
     "description": "Monitor Azure DevOps Service status from within Visual Studio",
