@@ -1,21 +1,8 @@
 {
   "$schema": "http://json.schemastore.org/vsix-publish",
-  "categories": [ "Coding", "Source Control", "Team Development" ],
+  "categories": [ "Tools", "Other", "Coding" ],
   "identity": {
-    "internalName": "VSTSStatusInspector",
-    "vsixId": "VSTSStatusInspector",
-    "version": "1.0.0",
-    "description": "Monitor Azure DevOps Service status from within Visual Studio",
-    "displayName": "Azure DevOps Status Monitor",
-    "icon": "AzureDevOpsStatusMonitor.Package\\Images\\Package.ico",
-    "tags": [
-      "Azure DevOps",
-      "Azure DevOps Service",
-      "VSTS",
-      "Visual Studio Team Service",
-      "Monitor"
-    ],
-    "language": "en-US"
+    "internalName": "VSTSStatusInspector"
   },
   "assetFiles": [
     {
