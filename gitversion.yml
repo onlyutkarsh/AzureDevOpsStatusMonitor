@@ -1,4 +1,4 @@
-next-version: 1.0
+next-version: 1.4
 assembly-informational-format: '{MajorMinorPatch}'
 mode: ContinuousDeployment
 branches:
