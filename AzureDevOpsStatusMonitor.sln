@@ -19,12 +19,18 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		VS2015-Debug|Any CPU = VS2015-Debug|Any CPU
+		VS2017-Debug|Any CPU = VS2017-Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{08A0E9C8-5281-4631-8F31-893151640EF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{08A0E9C8-5281-4631-8F31-893151640EF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08A0E9C8-5281-4631-8F31-893151640EF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08A0E9C8-5281-4631-8F31-893151640EF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08A0E9C8-5281-4631-8F31-893151640EF2}.VS2015-Debug|Any CPU.ActiveCfg = VS2015-Debug|Any CPU
+		{08A0E9C8-5281-4631-8F31-893151640EF2}.VS2015-Debug|Any CPU.Build.0 = VS2015-Debug|Any CPU
+		{08A0E9C8-5281-4631-8F31-893151640EF2}.VS2017-Debug|Any CPU.ActiveCfg = VS2017|Any CPU
+		{08A0E9C8-5281-4631-8F31-893151640EF2}.VS2017-Debug|Any CPU.Build.0 = VS2017|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
