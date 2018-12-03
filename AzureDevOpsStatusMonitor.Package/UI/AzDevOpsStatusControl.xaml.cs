@@ -38,8 +38,8 @@ namespace AzureDevOpsStatusMonitor.UI
             else
             {
                 txtOverallStatus.Text = "Unable to get Azure DevOps status";
-                imgStatusMid.Moniker = KnownMonikers.StatusInvalidOutlineNoColor;
-                imgStatusTop.Moniker = KnownMonikers.StatusInvalidOutlineNoColor;
+                imgStatusMid.Moniker = KnownMonikers.StatusInvalidOutline;
+                imgStatusTop.Moniker = KnownMonikers.StatusInvalidOutline;
             }
             
         }
@@ -66,7 +66,7 @@ namespace AzureDevOpsStatusMonitor.UI
                 }
                 default:
                 {
-                    return KnownMonikers.StatusInvalidOutlineNoColor;
+                    return KnownMonikers.StatusInvalidOutline;
                 }
             }
         }

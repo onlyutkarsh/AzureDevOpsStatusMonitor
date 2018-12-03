@@ -8,8 +8,8 @@
     xmlns:imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:my="clr-namespace:AzureDevOpsStatusMonitor"
+    xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.14.0"
     xmlns:platformUi1="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Utilities"
-    xmlns:shell="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
     xmlns:vsImaging="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Imaging"
     HorizontalAlignment="Right"
     VerticalAlignment="Stretch"
@@ -21,17 +21,17 @@
         <Style x:Key="{x:Type Hyperlink}" TargetType="{x:Type Hyperlink}">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="true">
-                    <Setter Property="Foreground" Value="{DynamicResource {x:Static shell:EnvironmentColors.PanelHyperlinkPressedBrushKey}}" />
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.PanelHyperlinkPressedBrushKey}}" />
                     <Setter Property="TextDecorations" Value="Underline" />
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="false">
-                    <Setter Property="Foreground" Value="{DynamicResource {x:Static shell:EnvironmentColors.PanelHyperlinkPressedBrushKey}}" />
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.PanelHyperlinkPressedBrushKey}}" />
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="true">
                     <Setter Property="Cursor" Value="Hand" />
                 </Trigger>
             </Style.Triggers>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static shell:EnvironmentColors.PanelHyperlinkPressedBrushKey}}" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static platformUi:EnvironmentColors.PanelHyperlinkPressedBrushKey}}" />
         </Style>
     </UserControl.Resources>
     <StackPanel
@@ -46,7 +46,7 @@
             Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Foreground="{DynamicResource {x:Static shell:EnvironmentColors.StatusBarTextBrushKey}}">Azure DevOps</TextBlock>
+                    <TextBlock Foreground="{DynamicResource {x:Static platformUi:EnvironmentColors.StatusBarTextBrushKey}}">Azure DevOps</TextBlock>
                     <imaging:CrispImage
                         Name="imgStatusTop"
                         Width="16"
