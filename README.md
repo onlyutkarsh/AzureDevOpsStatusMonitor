@@ -1,5 +1,7 @@
 # Azure DevOps Status Monitor
 
+[![Build status](https://dev.azure.com/utkarshshigihalli/opensource/_apis/build/status/VSExtensions/AzureDevOpsStatusMonitor)](https://dev.azure.com/utkarshshigihalli/opensource/_build/latest?definitionId=4)
+
 The simple extension quietly sits in the Visual Studio status bar displaying Azure DevOps Service status. You can click on the icon on the Visual Studio status bar to view more details. 
 
 ![](screenshots/screenshot.png)
