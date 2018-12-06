@@ -1,6 +1,6 @@
 {
   "$schema": "http://json.schemastore.org/vsix-publish",
-  "categories": [ "VisualStudioExtensions", "Other", "Services" ],
+  "categories": [ "visualstudioextensions", "services" ],
   "identity": {
     "internalName": "VSTSStatusInspector"
   },
