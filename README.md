@@ -44,3 +44,7 @@ Alternatively you can contribute the fix by making a pull request :-)
 > **v1.1**
 > - Update the timer interval immediately rather than waiting for a VS restart
 > - Handle exceptions when unable to connect to support page.
+
+## Acknowledgment
+
+https://github.com/lkytal/StatusInfo
